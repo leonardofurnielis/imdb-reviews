@@ -1,1 +1,1 @@
-# watson-studio-imdb-reviews-kaggle
+# imdb-reviews-sentiment-analyses
