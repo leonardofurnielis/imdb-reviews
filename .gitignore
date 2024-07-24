@@ -1,4 +1,9 @@
-**/.ipynb_checkpoints
-jupyter/azure_credit_risk_input_data.json
-
+__pycache__/
+*.py[cod]
+*$py.class
 .DS_Store
+.vscode/
+.idea/
+instance/
+.webassets-cache
+.ipynb_checkpoints
