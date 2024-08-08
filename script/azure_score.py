@@ -13,7 +13,6 @@ def init():
     model_path = os.path.join(str(os.getenv("AZUREML_MODEL_DIR")), "azure_credit_risk_model.pkl") 
     model = joblib.load(model_path)
 
-    print("===> Init complete")
 
 def run(input_payload):
     """
@@ -21,35 +20,22 @@ def run(input_payload):
     In the example we extract the data from the json input and call the scikit-learn model's predict()
     method and return the result back
     """
-    print("===> Request received")
     try:
         if type(input_payload) is str:
             dict_data = json.loads(input_payload)
         else:
             dict_data = input_payload
 
-        data = pd.DataFrame.from_dict(dict_data["input"])
+        data = pd.DataFrame.from_dict(dict_data['input'])
         predictions = model.predict(data)
         scores = model.predict_proba(data)
-        risk_column = []
-        proba_column = []
-        proba_vector = []
+        records = []
 
         for pred, proba in zip(predictions, scores):
-            risk_column.append(pred)
-            proba_vector.append([proba[0], proba[1]])
-            if pred == "No Risk":
-                proba_column.append(proba[0])
-            else:
-                proba_column.append(proba[1])
-        data["Scored Labels"] = risk_column
-        data["Scored Probabilities"] = proba_column
-        data["ProbabilityVector"] = proba_vector
+            records.append({ "Scored Labels": pred.tolist(), "Scored Probabilities": proba.tolist() })
 
-        result = { "output": data.to_dict('records') }
-        print("===> Request processed")
-
-        return result
+        return { "output": records }
+        
     except Exception as e:
         result = str(e)
         return { "error": result }
