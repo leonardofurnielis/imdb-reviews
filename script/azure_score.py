@@ -10,7 +10,7 @@ def init():
     You can write the logic here to perform init operations like caching the model in memory
     """
     global model
-    model_path = os.path.join(str(os.getenv("AZUREML_MODEL_DIR")), "azure_credit_risk_model.pkl") 
+    model_path = os.path.join(str(os.getenv("AZUREML_MODEL_DIR")), "azure_credit_risk_model.pickle")
     model = joblib.load(model_path)
 
 
